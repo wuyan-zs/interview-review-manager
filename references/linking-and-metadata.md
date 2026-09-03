@@ -26,6 +26,34 @@ Every task written to `00-导航/当前任务.md` must link to its exact source 
 
 When the user requests interview-link organization or tracked ingestion, enrich the source question with compact `关联内容` links. Preserve the original question, answer, score, and feedback verbatim.
 
+## Nonstandard-note fallback
+
+Many useful notes are not scored interview reviews. A file named “知识补强手册”, “速成手册”, “面试题整理”, or “查漏补缺” may use a handbook shape such as `问题 → 完整答案 → 记忆要点`, repeated `问题 1`, or numbered sections. Do not reject it because it lacks YAML, a date, or fields such as `我的回答` and `评分`.
+
+Use this fallback in order:
+
+1. Detect question units from semantic cues: a heading containing `问题`, `面试官题目`, `Q1`, or a numbered question; a line ending in `？`/`?` followed by an answer; or a repeated question heading followed by answer/feedback markers. A question unit ends at the next question cue or the next same/higher-level section heading.
+2. If a unit boundary is clear, preserve its text and place exactly one annotation immediately below the question line and before the answer:
+
+   ```markdown
+   **关联内容：**
+   - 项目回答：[[02-项目库/TSR端侧部署项目/TSR部署与量化细节#RGA链路|TSR零拷贝链路]]
+   ```
+
+   The bold label is the stable human-facing marker. It is intentionally not a `#tag`: the useful object here is a semantic link, not a broad tag. For a mixed question, add separate `通用原理` and `项目回答` lines.
+3. If the unit is clear but no canonical destination is safe, still add the label with an explicit status, without a broken link:
+
+   ```markdown
+   **关联内容：** 待补充（missing）
+   - 建议：`01-知识库/AI推理部署/CNN检测网络结构`
+   ```
+
+   Use `临时答案（source-only）`, `部分覆盖（partial）`, or `候选不唯一（ambiguous）` when those statuses are more accurate. A proposed path is plain code text until a real file and heading have been verified.
+4. If even the question boundary is uncertain, do not insert a label into the source. Report a preview containing the candidate lines, the inferred boundary, and the missing evidence needed to continue. This prevents a handbook's headings, table of contents, or explanatory paragraphs from being mistaken for interview questions.
+5. Re-running the operation must reuse the existing `关联内容` block and merge only missing lines. Never add a second label below the same question.
+
+This fallback is additive and does not require converting the note to a template. Metadata may be added after the requested semantic pass; a handbook with unresolved units receives `link_status: partial`, not `linked`.
+
 ## Classify the answer destination
 
 `01-知识库` and `02-项目库` are peer canonical destinations. Route by the question's interview intent, not by keywords or by whether a mechanism could theoretically be reused.
