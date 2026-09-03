@@ -1,0 +1,4 @@
+interface:
+  display_name: "面试复习管家"
+  short_description: "链接面试原题与知识或项目答案，追踪缺口并生成闭卷复习计划"
+  default_prompt: "使用 $interview-review-manager 整理最新面试复盘的知识链接，更新复习中心，并把带原题出处的今日任务以 Checklist 写入当前任务。"
