@@ -36,12 +36,13 @@ Before organizing links, classifying answers, adding anchors, marking an answer 
 Use for a named real/mock interview review, or before adding its items to the review center.
 
 1. Work on the named file or bounded directory only. A full-vault baseline requires an explicit request.
-2. Find each question and give it a stable exact target: a unique heading if available, otherwise a block ID attached to the question.
-3. Route by the question's intent: standalone 八股 → `01-知识库`; project/internship implementation, ownership, metrics, incident, or trade-off → `02-项目库`; behavioral → `05-简历与表达`; use both only for a genuinely mixed question.
-4. Add vault-relative Obsidian links and compact `关联内容` annotations without changing original questions, answers, scores, or feedback.
-5. Search before declaring a gap. Distinguish `linked`, `source-only`, `partial`, `ambiguous`, `missing`, and `unlinked`.
-6. If the user asked to update the review center, merge each weakness into one stable topic item with exact source-question and answer links. Do not copy whole answers into the center.
-7. Add or merge indexing metadata only for notes actually classified or link-enriched. Validate every added link and anchor.
+2. Detect semantic question units, not one rigid template. Recognize headings such as `问题`, `面试官题目`, `Q1`, numbered questions, and a handbook pattern such as `问题 → 完整答案 → 记忆要点`. Treat each question heading plus its answer/feedback until the next question or section as one unit. If a file is a handbook, guide, or knowledge supplement rather than a scored review, preserve its type and do not require interview-date or score fields.
+3. Give each question a stable exact target. Prefer its full unique heading even when the heading is long. Add a visible block ID only when there is no safe heading target, headings are actually duplicated/unstable, or the user explicitly requests block IDs. Never add an ID merely because the file is nonstandard.
+4. Route by the question's intent: standalone 八股 → `01-知识库`; project/internship implementation, ownership, metrics, incident, or trade-off → `02-项目库`; behavioral → `05-简历与表达`; use both only for a genuinely mixed question.
+5. Search filenames, headings, aliases, and distinctive terms in both peer libraries before declaring a gap. Add vault-relative links and compact `关联内容` annotations for every confidently matched in-scope question, without changing original questions, answers, scores, or feedback.
+6. Distinguish `linked`, `source-only`, `partial`, `ambiguous`, `missing`, and `unlinked`. If structure or destination confidence is low, leave the source unchanged and show a preview with the suspected question range and the reason it needs confirmation.
+7. If the user asked to update the review center, merge each weakness into one stable topic item with exact source-question and answer links. Do not copy whole answers into the center.
+8. Add or merge indexing metadata only for notes actually classified or link-enriched. Validate every link and anchor.
 
 ## 2. 给我今天的复习任务
 

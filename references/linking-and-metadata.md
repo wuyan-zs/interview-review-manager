@@ -68,10 +68,10 @@ Use a full vault-relative path whenever duplicate filenames are possible. Do not
 
 ## Source anchors
 
-Prefer anchors in this order:
+Prefer targets in this order:
 
-1. An existing unique, stable question heading.
-2. A new stable block ID when the heading is absent, duplicated, excessively long, or likely to be edited.
+1. An existing unique, stable question heading, even if it is long. The visible alias keeps links readable in the review center.
+2. A new stable block ID only when the heading is absent, actually duplicated/unstable, or the desired target is a paragraph inside a larger section. Do not add block IDs to every heading in a nonstandard note just to make it look indexed.
 
 Use lowercase ASCII block IDs with no spaces. Attach the ID to the actual question paragraph so the link lands on the question text:
 
@@ -87,7 +87,7 @@ Link to it with:
 [[04-模拟面试/卓驭专项/06-卓驭第六轮模拟面试复盘#^q-zy-mock06-02|卓驭六模·Q2]]
 ```
 
-Use a stable pattern such as `q-<company-or-track>-<date-or-round>-<number>`. Check the whole target note before adding an ID so it remains unique. Do not rename an existing question heading merely to make a link shorter.
+Use a stable pattern such as `q-<company-or-track>-<date-or-round>-<number>`. Check the whole target note before adding an ID so it remains unique. Do not rename an existing question heading merely to make a link shorter. In source mode a block ID is visible text; it is a locator, not content. If a unique heading works, prefer the heading so the source note stays visually clean.
 
 ## Source-note enrichment
 
