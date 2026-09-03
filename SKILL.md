@@ -1,6 +1,9 @@
 ---
 name: interview-review-manager
-description: "Manage an Obsidian interview-preparation vault by linking interview questions to exact knowledge or project blocks, detecting answer gaps, adding indexing metadata, maintaining a compact source-traceable review center, generating active-recall plans, conducting tracked drills, and auditing progress. Use for 面试知识链接整理、复盘吸收、写入或更新复习中心、薄弱点整理、复习计划、闭卷测试、模拟面试复测或知识库复习管理; do not use for ordinary technical Q&A, incidental file reading, or a general mock interview unless link or review tracking is requested."
+description: >-
+  Manage an Obsidian interview-preparation vault. Use for 面试复盘吸收、面试题链接整理、
+  更新复习中心或当前任务、薄弱点复习计划、闭卷复测和周度复盘。Do not use for ordinary
+  technical Q&A or standalone mock interviews.
 ---
 
 # Interview Review Manager
