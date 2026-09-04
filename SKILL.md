@@ -44,8 +44,9 @@ Use for a named real/mock interview review, or before adding its items to the re
 7. Apply the fallback in [references/linking-and-metadata.md](references/linking-and-metadata.md#nonstandard-note-fallback). When a question unit is confidently detected but its answer destination is not, still add the label `**关联内容：**` immediately below the question with a plain-language status and a proposed destination; never create a guessed/broken wiki link. If the question boundary itself is uncertain, leave the source unchanged and show a preview with the suspected range and reason.
 8. Distinguish `linked`, `source-only`, `partial`, `ambiguous`, `missing`, and `unlinked`.
 9. If a named file contains more than 12 question units, show an inventory and process it in resumable batches of about 6–8 units unless the user explicitly requests one uninterrupted pass. Finish and validate each batch before starting the next; do not silently scan the whole vault.
-10. If the user asked to update the review center, merge each weakness into one stable topic item with exact source-question and answer links. Do not copy whole answers into the center.
-11. Add or merge indexing metadata only for notes actually classified or link-enriched. Validate every link and anchor.
+10. For `partial`, `missing`, or `ambiguous` answer content, default to proposal-only: explain the exact gap, suggested destination, and smallest draft or patch, but do not create or edit a canonical knowledge/project answer until the user explicitly confirms. A request to organize or import permits source annotations and review-center markers, not unapproved canonical content. Project facts, responsibilities, metrics, and incidents require the user's confirmation.
+11. If the user asked to update the review center, merge each weakness into one stable topic item with exact source-question and answer links. Do not copy whole answers into the center.
+12. Add or merge indexing metadata only for notes actually classified or link-enriched. Validate every link and anchor.
 
 ## 2. 给我今天的复习任务
 
@@ -64,7 +65,7 @@ Use after a simulator has completed its session. This skill does not need to cal
 2. Save or locate the session under `04-模拟面试`, preserving the simulator's original questions, responses, scores, and feedback as source evidence.
 3. Apply the same link-routing and answer-status rules as operation 1.
 4. Record the *first-answer* score and an evidenced session date when supplied. Do not invent dates or treat an immediate retry as mastery.
-5. Add only genuine weaknesses to the review center; strong topics are maintenance candidates, not automatic queue entries.
+5. Add only genuine weaknesses to the review center; strong topics are maintenance candidates, not automatic queue entries. If the import reveals `partial` or `missing` canonical content, follow the proposal-only rule in operation 1 rather than silently writing a new answer.
 
 ## Shared safeguards
 

@@ -163,9 +163,18 @@ Example:
 → 建议沉淀：01-知识库/边缘部署/DMA-BUF.md#缓存一致性
 ```
 
-### Creating a missing answer
+### Creating or completing canonical answers
 
-Create a new canonical note or block only when the user requests knowledge consolidation. Prefer creating it for P0 items, role-relevant P1 items, or topics repeated across reviews. Park low-relevance gaps rather than creating empty-note sprawl.
+Content supplementation is a separate confirmation step. A request to organize links, ingest a review, or update the review center does not by itself authorize creating a new canonical answer or rewriting an existing one.
+
+Default sequence:
+
+1. Show the exact gap, proposed destination, smallest useful outline or patch, and any facts that must be confirmed.
+2. Wait for an explicit confirmation such as `确认写入` or a direct request to补充/沉淀该知识点.
+3. Write only the confirmed smallest block, preserving existing content and marking AI-proposed material as a draft when it is not user evidence.
+4. Add the verified canonical link and update the source annotation/review center.
+
+Prefer creating or extending content for P0 items, role-relevant P1 items, or topics repeated across reviews. Park low-relevance gaps rather than creating empty-note sprawl.
 
 Start with the smallest useful structure:
 
