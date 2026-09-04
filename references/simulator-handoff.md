@@ -40,7 +40,7 @@ interview_date: 2026-09-03
 **建议核对：** ……
 ```
 
-Required for useful import: question, first answer or an explicit blank, and score/feedback when the simulator supplied them. Preserve follow-up questions and retries, but label them separately from the first answer.
+Required for useful import: question, first answer or an explicit blank, and score/feedback when the simulator supplied them. If no score was supplied, keep the field absent or write `首答评分：未量化`; do not let the importer infer a number from prose. Preserve follow-up questions and retries, but label them separately from the first answer.
 
 ## Import contract
 
@@ -49,7 +49,7 @@ For each question, the manager should:
 1. Add a stable source anchor only if its heading is not a safe exact target.
 2. Link a standalone question to `01-知识库`, a project question to `02-项目库`, and a behavioral question to `05-简历与表达`.
 3. Treat an answer that exists only in this record as `source-only`; propose, but do not automatically write, a canonical note unless the user asks for consolidation.
-4. Use the recorded first-answer score and `interview_date` only when actually present. The date is the evidence base for a calculated next review; otherwise use `待安排`.
+4. Use the recorded first-answer score, its declared scale, and `interview_date` only when actually present. The date plus a comparable score is the evidence base for a calculated next review; otherwise use `首答：未量化` and/or `下次：待安排`. A qualitative label or feedback remains raw evidence unless a mapping was supplied.
 5. Merge repeated weaknesses into the existing review-center topic and create a daily task only when the user asks for today's plan.
 
 ## DSH use

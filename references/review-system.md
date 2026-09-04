@@ -6,7 +6,7 @@ Read this reference whenever creating or updating the review center, scheduling 
 
 - 初始化或更新 `复习中心.md`：阅读 [`00-导航/复习中心.md` format](#00-导航复习中心md-format) 和 [Ingest update rules](#ingest-update-rules)。
 - 生成今天的 checklist：阅读 [Daily task format](#daily-task-format) 和 [Regenerating the daily plan](#regenerating-the-daily-plan)。
-- 计算优先级、状态或复习日期：阅读 [Priority](#priority)、[Status](#status) 和 [Scheduling](#scheduling)。
+- 计算优先级、状态或复习日期：阅读 [Priority](#priority)、[Evidence-first scoring fallback](#evidence-first-scoring-fallback)、[Status](#status) 和 [Scheduling](#scheduling)。
 - 闭卷复测或周度审计：阅读 [Mastery evidence](#mastery-evidence)、[Scoring rubric](#scoring-rubric) 和 [Active-recall action by topic](#active-recall-action-by-topic)。
 - 写入 `复习中心.md` 或 `当前任务.md` 后：阅读 [复习系统校验器](#复习系统校验器)。
 
@@ -34,8 +34,42 @@ Keep distinct mechanisms separate when they need different practice. For example
 - `P0`: repeated failure with latest score below 6; or a role-critical topic with a score of 0–3 or an explicit blank.
 - `P1`: one failure below 6; a score of 6–7 needing consolidation; or a former P0 that improved only once.
 - `P2`: stable score of at least 8, low-frequency/low-relevance material, or maintenance-only strengths.
+- `待评估`: there is not yet comparable performance evidence. This is a routing state, not a score and not an urgency claim.
 
 When evidence conflicts, role relevance and recent closed-book performance matter more than document length or how often an answer appears in notes.
+
+## Evidence-first scoring fallback
+
+评分不是复盘的必填字段。先判断来源中到底有什么证据，再决定是否能产生优先级和日期；不要为了填满模板而补一个数字。
+
+Classify the evidence for each topic into one of these modes:
+
+- `explicit-score`: the source explicitly gives a score and scale, such as `4/10`, `B-`, or `3/5`. Preserve the raw value and scale exactly. Apply the numeric rubric and interval rules only when the scale is explicitly `0–10`; do not silently normalize `3/5` or a letter grade to `/10`.
+- `explicit-label`: the source gives a label such as `通过`, `需加强`, or `不合格`, but no declared mapping. Preserve the label verbatim. Map it to P0/P1/P2 only when the simulator/user has supplied a stable mapping; otherwise use `待评估`.
+- `qualitative-evidence`: the source describes what happened without a score, for example “明确答不上来”“核心机制讲反”“能答主线但追问断掉”. Preserve a short faithful evidence note; never reverse-engineer a number from the wording.
+- `unassessed`: the source has a question but no answer-quality evidence, score, or feedback. Do not call it a failure. Use `首答：未量化` and `面试证据：未记录`, and keep it out of the weakness queue unless the user explicitly asks for a diagnostic.
+- `conflict`: score, label, and prose disagree, or two attempts use incompatible scales. Stop automatic score/date updates, show the conflicting raw evidence, and request confirmation.
+
+Use the following conservative mapping when there is no numeric score:
+
+- An explicit blank, fundamental error, or “无法回答” on a role-critical topic → `P0 · learning`.
+- One clearly documented mechanism gap or failed follow-up without a score → `P1 · learning` (raise to P0 only when the source says it is repeated or role-critical and severe).
+- No performance evidence → `待评估 · new`; no review interval is implied.
+- A qualitative strength without a score is not evidence for `P2`; keep it as a maintenance candidate only when the topic is role-critical.
+
+Review-center examples:
+
+```markdown
+- **ARM 微架构与 Linux 调度** · P0 · learning · 首答：未量化 · 面试证据：明确答不上来 · 下次：待安排
+  - 题目：[[03-真实面试/卓驭/卓驭-一面复盘#十、平台、芯片、ARM 架构与操作系统|卓驭一面·ARM与调度]]
+  - 核对：待补充（missing） · 建议：`01-知识库/操作系统/ARM微架构与Linux调度`
+
+- **反问准备** · 待评估 · new · 首答：未量化 · 面试证据：未记录
+  - 题目：[[03-真实面试/卓驭/卓驭-一面复盘#十四、反问环节|卓驭一面·反问]]
+  - 核对：待评估（没有可用作答证据）
+```
+
+`首答：未量化` means only that no comparable score was supplied; it does not mean zero. `面试证据：未记录` means the source is silent; it must not be rewritten as “答不上来”.
 
 ## Status
 
@@ -59,6 +93,7 @@ These intervals are default heuristics, not observed facts about the user. A cal
 - Use an explicit interview/review date, tracked drill date, or a date confirmed by the user as the base date.
 - Never use `indexed_at`, file modification time, or the current date as a substitute for an unknown attempt date.
 - When the score exists but its attempt date is unknown, record `待安排`; if generating today's plan, the item may still be selected by priority without fabricating a historical date.
+- When the score is absent or the scale is not comparable, do not calculate a next-review interval. For a documented weakness use `下次：待安排`; for `待评估` use no date or `下次：待评估`. A today's-plan item in this state must be a `闭卷诊断`, whose result establishes the first comparable evidence.
 - If the user supplies a deadline, compress intervals while preserving at least one delayed retrieval attempt.
 - Do not schedule every known topic on the same day. Daily capacity wins over the number of due items.
 
@@ -74,6 +109,8 @@ Mark mastered only when all applicable conditions hold:
 An immediate retry measures correction, not durable mastery.
 
 ## Scoring rubric
+
+Apply this rubric only to an explicitly established 0–10 score. It is not a translation table for prose, letter grades, pass/fail labels, or another scale.
 
 - 0–2: blank, unrelated, or fundamental model is wrong.
 - 3–4: recognizes the topic but misses the core mechanism or reverses a key conclusion.
@@ -129,7 +166,7 @@ Rules:
 
 - `复习中心.md` embeds `![[当前任务#今日任务]]` exactly once. The checklist itself lives only in `当前任务.md`.
 - One compact list item per normalized topic. Add multiple source links to the same item instead of duplicating it.
-- Keep only decision-useful state on the first line: topic, priority, status, evidenced latest score, and next eligible date when known. Omit unknown fields instead of filling placeholders.
+- Keep only decision-useful state on the first line: topic, priority/status, evidenced latest score or an explicit scoreless marker, and next eligible date when known. For scoreless evidence use `首答：未量化`, `评分尺度：未知`, `面试证据：...`, or `待评估`; never use a made-up numeric placeholder. Never write a calculated date without a valid base date and comparable score; `下次：待安排`/`下次：待评估` are explicit non-dates and are allowed when they clarify the next action.
 - Do not display domain/type when the destination links already make it obvious. Preserve those classifications internally while processing.
 - `核对` points to exact canonical headings or blocks when possible. If an answer exists only in a review, show `临时答案（source-only）` with its exact link and an intent-appropriate proposed destination. Otherwise show a concise `partial`, `ambiguous`, or `missing` marker; do not silently create a large new note.
 - `题目` is mandatory and links to the exact interview question heading or block. Add multiple aliased source links under the same topic when it recurs.
@@ -193,8 +230,9 @@ Without `--require-sections`, it skips a dashboard file or section that has not 
 For each extracted weakness:
 
 1. Search the review center for the canonical topic and common synonyms.
-2. If found, update evidenced latest score, status, priority, next eligible date when its base date is known, and append the new source link.
+2. Extract the raw evidence mode and value before updating anything. If found, update only an evidenced score/label on a compatible scale, the evidence note, status, priority, and next eligible date when its base date is known; append the new source link. Never replace an explicit score with an estimate or compare incompatible scales.
 3. If not found, add one compact item using a stable topic name.
-4. Preserve improvement history in the review log; do not replace a low first-attempt score with an immediate corrected score.
+4. Preserve improvement history in the review log; do not replace a low first-attempt score with an immediate corrected score. A scoreless event records its evidence mode and wording instead of a number.
 5. When a review reports a demonstrated strength, add it only as a maintenance item if it is role-critical. Do not flood the queue with strengths.
 6. If an answer exists only in the review itself, record it as `source-only`, link its exact answer block temporarily, and propose the destination selected from the question's intent. Project answers do not need a duplicate knowledge note.
+7. A question with no score is not automatically a weakness. Add it to the review center only when the source contains an explicit gap or the user asks to establish a baseline; otherwise add source links/annotations only. If a baseline is requested, mark it `待评估 · new` and create a diagnostic task rather than a spaced-review task.
