@@ -54,6 +54,12 @@ Use this fallback in order:
 
 This fallback is additive and does not require converting the note to a template. Metadata may be added after the requested semantic pass; a handbook with unresolved units receives `link_status: partial`, not `linked`.
 
+## Efficient discovery and batching
+
+For a single named note, do not perform a full-content read of every candidate library file. First collect the source note's question headings and distinctive terms, then scan the filenames and headings of `01-知识库`, `02-项目库`, and `05-简历与表达` once. Group repeated concepts such as quantization, concurrency, or DMA-BUF and reuse the candidate set for the group. Read only the candidate sections required to verify an exact target.
+
+If a source note contains more than 12 question units, use resumable batches of roughly 6–8 questions. Report the inventory and the current batch before writing, validate that batch, and state the next question to resume from. A batch boundary is an efficiency safeguard, not a reason to create duplicate topics or metadata. Never expand a one-file request into a full-vault scan unless the user explicitly asks for a baseline.
+
 ## Classify the answer destination
 
 `01-知识库` and `02-项目库` are peer canonical destinations. Route by the question's interview intent, not by keywords or by whether a mechanism could theoretically be reused.
